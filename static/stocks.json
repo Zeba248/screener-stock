@@ -1,0 +1,58 @@
+{
+  "last_updated": "2025-07-17 21:37:00",
+  "stocks": [
+    {
+      "ticker": "TSLA",
+      "name": "Tesla, Inc.",
+      "sector": "Consumer Cyclical",
+      "price_change": -0.16,
+      "rsi": 50,
+      "volume": "38.6M",
+      "market_cap": "$1034.4B",
+      "is_positive": false
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple Inc.",
+      "sector": "Technology",
+      "price_change": 0.27,
+      "rsi": 50,
+      "volume": "17.1M",
+      "market_cap": "$3147.4B",
+      "is_positive": true
+    },
+    {
+      "ticker": "INFY.NS",
+      "name": "INFOSYS LIMITED",
+      "sector": "Technology",
+      "price_change": -1.52,
+      "rsi": 50,
+      "volume": "7.4M",
+      "market_cap": "$6641.0B",
+      "is_positive": false
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "name": "RELIANCE INDUSTRIES LTD",
+      "sector": "Energy",
+      "price_change": -0.62,
+      "rsi": 50,
+      "volume": "11.9M",
+      "market_cap": "$20731.2B",
+      "is_positive": false
+    },
+    {
+      "ticker": "TCS.NS",
+      "name": "TATA CONSULTANCY SERV LT",
+      "sector": "Technology",
+      "price_change": -0.74,
+      "rsi": 50,
+      "volume": "2.9M",
+      "market_cap": "$12252.6B",
+      "is_positive": false
+    },
+    {
+      "_fetched_at": "2025-07-17 21:37:00"
+    }
+  ]
+}

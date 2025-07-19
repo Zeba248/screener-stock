@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Screener - SmartTick AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f7fafc;
+            font-family: 'Inter', sans-serif;
+        }
+        .screener-section {
+            background: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+        .pill-container {
+            gap: 0.75rem;
+        }
+        .pill {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #63B3ED, #4299E1);
+            border: none;
+            color: #FFFFFF;
+        }
+        .btn-outline-secondary {
+            border: 1px solid #CBD5E0;
+            color: #2D3748;
+        }
+        .hover-row:hover {
+            background: #F7FAFC;
+            transition: background 0.3s ease;
+        }
+        .text-green {
+            color: #38A169;
+        }
+        .text-red {
+            color: #E53E3E;
+        }
+        .text-gray-500 {
+            color: #718096;
+        }
+        .text-gray-600 {
+            color: #4A5568;
+        }
+    </style>
+</head>
+<body>
+    <section class="screener-section">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h6 class="fw-bold text-dark mb-0 text-xl">Stock Screener</h6>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort by: Price Change
+                </button>
+                <ul class="dropdown-menu bg-white text-dark">
+                    <li><a class="dropdown-item text-dark" href="#">Sort by: Price Change</a></li>
+                    <li><a class="dropdown-item text-dark" href="#">Sort by: RSI</a></li>
+                    <li><a class="dropdown-item text-dark" href="#">Sort by: Volume</a></li>
+                    <li><a class="dropdown-item text-dark" href="#">Sort by: Market Cap</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pill-container d-flex flex-wrap mb-5">
+            <label class="pill btn btn-sm btn-primary rounded-pill">All</label>
+            <label class="pill btn btn-sm btn-outline-secondary rounded-pill">Large Cap</label>
+            <label class="pill btn btn-sm btn-outline-secondary rounded-pill">Mid Cap</label>
+            <label class="pill btn btn-sm btn-outline-secondary rounded-pill">Small Cap</label>
+            <label class="pill btn btn-sm btn-outline-secondary rounded-pill">High Volatility</label>
+        </div>
+        <table class="table table-hover text-dark">
+            <thead class="desktop-only">
+                <tr>
+                    <th class="fw-semibold text-gray-600">Stock</th>
+                    <th class="fw-semibold text-gray-600 text-end">Price Change</th>
+                    <th class="fw-semibold text-gray-600 text-end">RSI</th>
+                    <th class="fw-semibold text-gray-600 text-end">Volume</th>
+                    <th class="fw-semibold text-gray-600 text-end">Market Cap</th>
+                    <th class="fw-semibold text-gray-600 text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover-row">
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="https://assets.tickertape.in/stock-logos/TSLA.png" alt="Tesla" width="40" height="40" class="me-3 rounded-circle">
+                            <div><a href="#" class="text-dark fw-medium">Tesla Inc</a><div class="text-gray-500 small">TSLA • Auto</div></div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-end"><div class="text-red fw-medium">-2.17%</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">40.2</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">8.4M</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">$820B</div></td>
+                    <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
+                </tr>
+                <tr class="hover-row">
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="https://assets.tickertape.in/stock-logos/AAPL.png" alt="Apple" width="40" height="40" class="me-3 rounded-circle">
+                            <div><a href="#" class="text-dark fw-medium">Apple Inc</a><div class="text-gray-500 small">AAPL • Tech</div></div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-end"><div class="text-green fw-medium">1.35%</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">62.1</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">10.2M</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">$2.5T</div></td>
+                    <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
+                </tr>
+                <tr class="hover-row">
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="https://assets.tickertape.in/stock-logos/INFY.png" alt="Infosys" width="40" height="40" class="me-3 rounded-circle">
+                            <div><a href="#" class="text-dark fw-medium">Infosys Ltd</a><div class="text-gray-500 small">INFY • IT</div></div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-end"><div class="text-green fw-medium">1.45%</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">55.4</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">5.2M</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">₹3.4T</div></td>
+                    <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
+                </tr>
+                <tr class="hover-row">
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="https://assets.tickertape.in/stock-logos/RELIANCE.png" alt="Reliance" width="40" height="40" class="me-3 rounded-circle">
+                            <div><a href="#" class="text-dark fw-medium">Reliance Industries</a><div class="text-gray-500 small">RELIANCE • Energy</div></div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-end"><div class="text-red fw-medium">-0.82%</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">48.6</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">6.3M</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">₹18.2T</div></td>
+                    <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
+                </tr>
+                <tr class="hover-row">
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="https://assets.tickertape.in/stock-logos/TCS.png" alt="TCS" width="40" height="40" class="me-3 rounded-circle">
+                            <div><a href="#" class="text-dark fw-medium">TCS</a><div class="text-gray-500 small">TCS • IT</div></div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-end"><div class="text-green fw-medium">0.67%</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">52.9</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">3.8M</div></td>
+                    <td class="align-middle text-end"><div class="text-gray-600">₹14.6T</div></td>
+                    <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
