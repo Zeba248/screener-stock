@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Stock Screener - SmartTick AI</title>
+  <title>Stock Screener - SmartTick AI (Real-time)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -45,85 +45,154 @@
     .text-gray-600 {
       color: #4A5568;
     }
+    .realtime-badge {
+      background: linear-gradient(45deg, #4CAF50, #2196F3);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .price-display {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    .last-fetched {
+      font-size: 0.8em;
+      color: #666;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
   
   <section class="screener-section">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h6 class="fw-bold text-dark mb-0 text-xl">Stock Screener</h6>
+      <div>
+        <h6 class="fw-bold text-dark mb-1 text-xl">Stock Screener</h6>
+        <span class="realtime-badge">🔴 LIVE</span>
+      </div>
       <div class="dropdown">
         <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Sort by: Price Change
         </button>
         <ul class="dropdown-menu bg-white text-dark">
-          <li><a class="dropdown-item text-dark" href="#">Sort by: Price Change</a></li>
-          <li><a class="dropdown-item text-dark" href="#">Sort by: RSI</a></li>
-          <li><a class="dropdown-item text-dark" href="#">Sort by: Volume</a></li>
-          <li><a class="dropdown-item text-dark" href="#">Sort by: Market Cap</a></li>
+          <li><a class="dropdown-item text-dark" href="?sort=price_change">Sort by: Price Change</a></li>
+          <li><a class="dropdown-item text-dark" href="?sort=current_price">Sort by: Current Price</a></li>
+          <li><a class="dropdown-item text-dark" href="?sort=volume">Sort by: Volume</a></li>
+          <li><a class="dropdown-item text-dark" href="?sort=market_cap">Sort by: Market Cap</a></li>
         </ul>
       </div>
     </div>
-    <p id="updated-time" class="text-muted small mb-3"></p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="text-muted small mb-0">Last updated: {{ last_updated }}</p>
+      <a href="{% url 'stocks:home' %}" class="btn btn-sm btn-primary">
+        <i class="bi bi-arrow-clockwise"></i> Refresh Data
+      </a>
+    </div>
 
     <table class="table table-hover text-dark">
       <thead>
         <tr>
           <th class="fw-semibold text-gray-600">Stock</th>
+          <th class="fw-semibold text-gray-600 text-end">Current Price</th>
           <th class="fw-semibold text-gray-600 text-end">Price Change</th>
           <th class="fw-semibold text-gray-600 text-end">RSI</th>
           <th class="fw-semibold text-gray-600 text-end">Volume</th>
           <th class="fw-semibold text-gray-600 text-end">Market Cap</th>
+          <th class="fw-semibold text-gray-600 text-end">Last Fetched</th>
           <th class="fw-semibold text-gray-600 text-end">Action</th>
         </tr>
       </thead>
-      <tbody id="screener-table-body">
-        <!-- Filled dynamically -->
+      <tbody>
+        {% for stock in stocks %}
+        <tr class="hover-row">
+          <td class="align-middle">
+            <div class="d-flex align-items-center">
+              <img src="https://assets.tickertape.in/stock-logos/{{ stock.ticker|cut:'.NS' }}.png" 
+                   width="40" height="40" class="me-3 rounded-circle"
+                   onerror="this.src='https://via.placeholder.com/40x40/007bff/ffffff?text={{ stock.ticker|slice:':2' }}'">
+              <div>
+                <a href="#" class="text-dark fw-medium">{{ stock.name }}</a>
+                <div class="text-gray-500 small">{{ stock.ticker }} • {{ stock.sector }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="price-display text-dark">
+              {% if stock.current_price > 0 %}
+                ${{ stock.current_price }}
+              {% else %}
+                N/A
+              {% endif %}
+            </div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="{% if stock.is_positive %}text-green{% else %}text-red{% endif %} fw-medium">
+              {% if stock.is_positive %}+{% endif %}{{ stock.price_change_percent }}%
+            </div>
+            <div class="small text-muted">
+              {% if stock.is_positive %}+{% endif %}${{ stock.price_change }}
+            </div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="text-gray-600">{{ stock.rsi }}</div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="text-gray-600">{{ stock.volume }}</div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="text-gray-600">{{ stock.market_cap }}</div>
+          </td>
+          <td class="align-middle text-end">
+            <div class="last-fetched">{{ stock.last_fetched }}</div>
+          </td>
+          <td class="align-middle text-end">
+            <button class="btn btn-sm btn-outline-secondary rounded-circle">
+              <i class="bi bi-plus"></i>
+            </button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center py-4">
+            <div class="text-muted">
+              <i class="bi bi-exclamation-triangle"></i>
+              No stock data available. Please refresh the page.
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
+
+    <div class="mt-4 p-3 bg-light rounded">
+      <div class="row text-center">
+        <div class="col-md-3">
+          <div class="fw-bold text-success">{{ stocks|length }}</div>
+          <div class="small text-muted">Stocks Tracked</div>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-primary">Real-time</div>
+          <div class="small text-muted">Data Freshness</div>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-info">Yahoo Finance</div>
+          <div class="small text-muted">Data Source</div>
+        </div>
+        <div class="col-md-3">
+          <div class="fw-bold text-warning">{{ last_updated|slice:":5" }}</div>
+          <div class="small text-muted">Last Update</div>
+        </div>
+      </div>
+    </div>
   </section>
-
-  <script>
-  fetch('/stocks.json')
-    .then(res => res.json())
-    .then(data => {
-      const stocks = data.stocks;
-      const lastUpdated = data.last_updated;
-
-      const tbody = document.getElementById("screener-table-body");
-      tbody.innerHTML = "";
-      stocks.forEach(stock => {
-        if (stock.ticker) { 
-          tbody.innerHTML += `
-            <tr class="hover-row">
-              <td class="align-middle">
-                <div class="d-flex align-items-center">
-                  <img src="https://assets.tickertape.in/stock-logos/${stock.ticker.replace('.NS', '')}.png" width="40" height="40" class="me-3 rounded-circle">
-                  <div>
-                    <a href="#" class="text-dark fw-medium">${stock.name}</a>
-                    <div class="text-gray-500 small">${stock.ticker} • ${stock.sector}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="align-middle text-end">
-                <div class="${stock.is_positive ? 'text-green' : 'text-red'} fw-medium">${stock.price_change}%</div>
-              </td>
-              <td class="align-middle text-end"><div class="text-gray-600">${stock.rsi}</div></td>
-              <td class="align-middle text-end"><div class="text-gray-600">${stock.volume}</div></td>
-              <td class="align-middle text-end"><div class="text-gray-600">${stock.market_cap}</div></td>
-              <td class="align-middle text-end"><button class="btn btn-sm btn-outline-secondary rounded-circle"><i class="bi bi-plus"></i></button></td>
-            </tr>`;
-        }
-      });
-
-      
-      document.getElementById("updated-time").innerText = `Last updated: ${lastUpdated}`;
-    })
-    .catch(err => {
-      console.error("Failed to fetch stocks.json", err);
-    });
-</script>
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

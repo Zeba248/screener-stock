@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple startup script for the Django Stock Screener
+Simple startup script for the Django Stock Screener (Real-time)
 """
 
 import os
@@ -23,7 +23,7 @@ def run_command(command, description):
         return False
 
 def main():
-    print("🚀 Starting Django Stock Screener Setup...")
+    print("🚀 Starting Django Stock Screener (Real-time) Setup...")
     
     # Check if we're in the right directory
     if not os.path.exists('manage.py'):
@@ -34,14 +34,18 @@ def main():
     if not run_command("python3 manage.py migrate", "Running database migrations"):
         sys.exit(1)
     
-    # Update stock data
-    if not run_command("python3 manage.py update_stocks", "Updating stock data"):
-        print("⚠️  Warning: Stock data update failed, but continuing...")
+    # Test real-time data fetch (optional)
+    print("🔄 Testing real-time stock data fetch...")
+    if run_command("python3 manage.py update_stocks", "Fetching real-time stock data"):
+        print("✅ Real-time data fetch successful!")
+    else:
+        print("⚠️  Warning: Real-time data fetch failed, but continuing...")
     
     # Start the development server
-    print("\n🎯 Starting Django development server...")
+    print("\n🎯 Starting Django development server with REAL-TIME stock data...")
     print("📱 Open your browser and go to: http://127.0.0.1:8000/")
     print("🔧 Admin interface available at: http://127.0.0.1:8000/admin/")
+    print("🔴 LIVE DATA: Each page refresh fetches fresh data from Yahoo Finance")
     print("🛑 Press Ctrl+C to stop the server\n")
     
     try:
